@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Data Divisi</h3>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addDivisi">
+        <i class="bi bi-plus-lg"></i> Tambah Divisi
+    </button>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nama Divisi</th>
+                        <th>Deskripsi</th>
+                        <th width="150">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for d in divisi %}
+                    <tr>
+                        <td>{{ d.id_divisi }}</td>
+                        <td>{{ d.nama_divisi }}</td>
+                        <td>{{ d.deskripsi }}</td>
+                        <td>
+                            <a href="/admin/divisi/delete/{{ d.id_divisi }}" class="btn btn-sm btn-danger" onclick="return confirm('Hapus divisi ini?')">
+                                <i class="bi bi-trash"></i> Hapus
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Tambah Divisi -->
+<div class="modal fade" id="addDivisi" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/admin/divisi/add" method="POST" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Divisi Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label">Nama Divisi</label>
+                    <input type="text" name="nama_divisi" class="form-control" required placeholder="Contoh: IT Support">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Deskripsi</label>
+                    <textarea name="deskripsi" class="form-control" rows="3" placeholder="Penjelasan singkat divisi..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

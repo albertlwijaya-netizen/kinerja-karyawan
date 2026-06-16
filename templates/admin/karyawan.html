@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Data Karyawan</h3>
+    <!-- Tombol untuk memicu Modal -->
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTambahKaryawan">
+        <i class="bi bi-person-plus"></i> Tambah Karyawan
+    </button>
+</div>
+
+<!-- Flash Message untuk notifikasi sukses/gagal -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>NIK</th>
+                        <th>Nama</th>
+                        <th>Divisi</th>
+                        <th>Jabatan</th>
+                        <th>Email</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for k in karyawan %}
+                    <tr>
+                        <td>{{ k.nik }}</td>
+                        <td>{{ k.nama }}</td>
+                        <td><span class="badge bg-secondary">{{ k.nama_divisi }}</span></td>
+                        <td>{{ k.jabatan }}</td>
+                        <td>{{ k.email }}</td>
+                        <td>
+                            <a href="/admin/karyawan/delete/{{ k.id_karyawan }}" class="btn btn-sm btn-danger" onclick="return confirm('Hapus karyawan & akun loginnya?')">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-muted">Belum ada data karyawan.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL TAMBAH KARYAWAN -->
+<div class="modal fade" id="modalTambahKaryawan" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <form action="/admin/karyawan/add" method="POST" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Input Karyawan Baru</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <!-- Data Pribadi -->
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">NIK</label>
+                        <input type="text" name="nik" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Nama Lengkap</label>
+                        <input type="text" name="nama" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Jenis Kelamin</label>
+                        <select name="jk" class="form-select">
+                            <option value="Laki-laki">Laki-laki</option>
+                            <option value="Perempuan">Perempuan</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Jabatan</label>
+                        <input type="text" name="jabatan" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Divisi</label>
+                        <select name="divisi_id" class="form-select" required>
+                            <option value="">-- Pilih Divisi --</option>
+                            {% for d in divisi %}
+                            <option value="{{ d.id_divisi }}">{{ d.nama_divisi }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Tanggal Bergabung</label>
+                        <input type="date" name="tanggal_bergabung" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" name="email" class="form-control">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">No. HP</label>
+                        <input type="text" name="no_hp" class="form-control">
+                    </div>
+
+                    <hr>
+                    <h6 class="mb-3 text-primary">Akun Login Karyawan</h6>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Username</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="text" name="password" class="form-control" required placeholder="Gunakan password biasa">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan Karyawan</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

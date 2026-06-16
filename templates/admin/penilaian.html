@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Penilaian Kinerja Karyawan</h3>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNilai">
+        <i class="bi bi-plus-lg"></i> Tambah Penilaian
+    </button>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Periode</th>
+                        <th>Nama Karyawan</th>
+                        <th>Hadir</th>
+                        <th>Disiplin</th>
+                        <th>Produk</th>
+                        <th>Kerjasama</th>
+                        <th>Nilai Akhir</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in penilaian %}
+                    <tr>
+                        <td>{{ p.periode }}</td>
+                        <td>{{ p.nama }}</td>
+                        <td>{{ p.kehadiran }}</td>
+                        <td>{{ p.disiplin }}</td>
+                        <td>{{ p.produktivitas }}</td>
+                        <td>{{ p.kerjasama }}</td>
+                        <td><span class="fw-bold text-primary">{{ p.nilai_akhir }}</span></td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Input Nilai -->
+<div class="modal fade" id="modalNilai" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="/admin/penilaian" method="POST" class="modal-content">
+            <div class="modal-header"><h5>Input Penilaian Kinerja</h5></div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label>Karyawan</label>
+                    <select name="karyawan_id" class="form-select" required>
+                        {% for k in karyawan %}
+                        <option value="{{ k.id_karyawan }}">{{ k.nama }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label>Periode (Bulan & Tahun)</label>
+                    <input type="text" name="periode" placeholder="Contoh: Januari 2024" class="form-control" required>
+                </div>
+                <div class="row">
+                    <div class="col-6 mb-3">
+                        <label>Kehadiran (0-100)</label>
+                        <input type="number" name="kehadiran" class="form-control" min="0" max="100" required>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>Disiplin (0-100)</label>
+                        <input type="number" name="disiplin" class="form-control" min="0" max="100" required>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>Produktivitas (0-100)</label>
+                        <input type="number" name="produktivitas" class="form-control" min="0" max="100" required>
+                    </div>
+                    <div class="col-6 mb-3">
+                        <label>Kerja Sama (0-100)</label>
+                        <input type="number" name="kerjasama" class="form-control" min="0" max="100" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label>Catatan</label>
+                    <textarea name="catatan" class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary w-100">Simpan Penilaian</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

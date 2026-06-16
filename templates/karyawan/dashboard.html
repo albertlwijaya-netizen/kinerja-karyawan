@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm bg-dark text-white p-3">
+            <div class="card-body d-flex align-items-center">
+                <div class="me-auto">
+                    <h6>Total Aktivitas Saya</h6>
+                    <h2 class="display-5 fw-bold">{{ total_act }}</h2>
+                </div>
+                <i class="bi bi-calendar-check" style="font-size: 3.5rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card border-0 shadow-sm bg-primary text-white p-3">
+            <div class="card-body d-flex align-items-center">
+                <div class="me-auto">
+                    <h6>Nilai Akhir Terakhir</h6>
+                    <h2 class="display-5 fw-bold">{{ last_score.nilai_akhir if last_score else 'N/A' }}</h2>
+                    <small>Periode: {{ last_score.periode if last_score else '-' }}</small>
+                </div>
+                <i class="bi bi-trophy" style="font-size: 3.5rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3">
+        <h5 class="mb-0 fw-bold">Aktivitas Terbaru Saya</h5>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Tanggal</th>
+                    <th>Aktivitas</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in activities %}
+                <tr>
+                    <td>{{ a.tanggal }}</td>
+                    <td>{{ a.aktivitas }}</td>
+                    <td><span class="badge bg-info">{{ a.status }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="/karyawan/aktivitas" class="btn btn-sm btn-outline-primary mt-3">Lihat Semua Aktivitas</a>
+    </div>
+</div>
+{% endblock %}

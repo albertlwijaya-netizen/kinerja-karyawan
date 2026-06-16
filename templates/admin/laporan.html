@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-body">
+        <h5 class="fw-bold mb-3">Filter Laporan Kinerja</h5>
+        <form method="GET" class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Berdasarkan Divisi</label>
+                <select name="divisi_id" class="form-select">
+                    <option value="">Semua Divisi</option>
+                    {% for d in divisi %}
+                    <option value="{{ d.id_divisi }}">{{ d.nama_divisi }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Tampilkan Laporan</button>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="button" onclick="window.print()" class="btn btn-secondary w-100">Cetak</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <h4 class="text-center mb-4">REKAPITULASI PENILAIAN KINERJA</h4>
+        <table class="table table-bordered align-middle text-center">
+            <thead class="table-light">
+                <tr>
+                    <th>No</th>
+                    <th>Nama Karyawan</th>
+                    <th>Divisi</th>
+                    <th>Periode</th>
+                    <th>Nilai Akhir</th>
+                    <th>Keterangan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for l in laporan %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ l.nama }}</td>
+                    <td>{{ l.nama_divisi }}</td>
+                    <td>{{ l.periode }}</td>
+                    <td class="fw-bold">{{ l.nilai_akhir }}</td>
+                    <td>
+                        {% if l.nilai_akhir >= 85 %} Sangat Baik
+                        {% elif l.nilai_akhir >= 75 %} Baik
+                        {% else %} Cukup
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

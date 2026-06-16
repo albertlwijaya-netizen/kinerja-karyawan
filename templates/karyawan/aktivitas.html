@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<h3>Riwayat Aktivitas Harian</h3>
+<div class="card mb-4">
+    <div class="card-header">Input Aktivitas</div>
+    <form action="/karyawan/aktivitas/add" method="POST" class="card-body row">
+        <div class="col-md-2"><input type="date" name="tanggal" class="form-control" required></div>
+        <div class="col-md-3"><input type="text" name="aktivitas" placeholder="Aktivitas" class="form-control" required></div>
+        <div class="col-md-2"><input type="text" name="target" placeholder="Target" class="form-control"></div>
+        <div class="col-md-2"><input type="text" name="hasil" placeholder="Hasil" class="form-control"></div>
+        <div class="col-md-2">
+            <select name="status" class="form-select">
+                <option value="Selesai">Selesai</option>
+                <option value="Belum Selesai">Belum Selesai</option>
+            </select>
+        </div>
+        <div class="col-md-1"><button type="submit" class="btn btn-primary w-100">Kirim</button></div>
+    </form>
+</div>
+
+<div class="table-responsive bg-white p-3 shadow-sm rounded">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Tanggal</th>
+                <th>Aktivitas</th>
+                <th>Target</th>
+                <th>Hasil</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for a in aktivitas %}
+            <tr>
+                <td>{{ a.tanggal }}</td>
+                <td>{{ a.aktivitas }}</td>
+                <td>{{ a.target }}</td>
+                <td>{{ a.hasil }}</td>
+                <td><span class="badge {{ 'bg-success' if a.status == 'Selesai' else 'bg-danger' }}">{{ a.status }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
