@@ -1,4 +1,5 @@
 Flask
-gunicorn
 PyMySQL
 Werkzeug
+certifi
+gunicorn
